@@ -1,48 +1,74 @@
-const button = document.querySelector('button')!;
+class Department {
+  protected employees: string[] = []; // Protected is available in this class and also for the classes that extends Department.
+  // But Private doesn't
 
-function clickHandler(message: string) {
-  console.log('Clicked! ' + message);
-}
-
-const testFunc = (num1: number, num2: number): boolean => {
-  if (num1 > num2) {
-    return true;
+  constructor(private readonly id: string, private name: string) {
+    // this.name = name;
+    // this.id = id;
   }
 
-  return false;
-};
+  describe(this: Department) {
+    console.log(`Department (${this.id}): (${this.name})`);
+  }
 
-button.addEventListener('click', () =>
-  clickHandler.bind(null, "You're Welcome!")
-);
+  addEmployee(employee: string) {
+    this.employees.push(employee);
+  }
 
-const hobbies: string[] = ['Sports', 'Cooking'];
-const activeHobbies: string[] = ['Hiking'];
+  printEmployeeInformation() {
+    console.log(this.employees.length);
+    console.log(this.employees);
+  }
+}
 
-activeHobbies.push(...hobbies);
+class ITDepartment extends Department {
+  admins: string[];
+  constructor(id: string, admins: string[]) {
+    super(id, 'IT');
+    this.admins = admins;
+  }
+}
 
-// Functions
-const add = (...numbers: number[]): number => {
-  return numbers.reduce((acc, item) => {
-    return acc + item;
-  }, 0);
-};
+class AccountingDepartment extends Department {
+  reports: string[];
+  constructor(id: string, reports: string[]) {
+    super(id, 'Accounting');
+    this.reports = reports;
+  }
 
-const addedNumbers = add(231, 321);
-console.log('addedNumbers ' + addedNumbers);
+  addEmployee(name: string) {
+    if (name === 'Max') {
+      return;
+    }
 
-type PersonTypes = {
-  firstName: string;
-  age: number;
-};
+    this.employees.push(name);
+  }
 
-const person: PersonTypes = {
-  firstName: 'Giorgi',
-  age: 23,
-};
+  addReport(text: string) {
+    this.reports.push(text);
+  }
 
-const [hobby1, hobby2, ...remainingHobbies] = hobbies;
-console.log(hobbies, hobby1, hobby2);
+  printReports() {
+    console.log(this.reports);
+  }
+}
 
-const { firstName: userName, age } = person;
-console.log(userName, age);
+// IT
+const it = new ITDepartment('d1', ['Max']);
+it.describe();
+
+it.addEmployee('Max');
+it.addEmployee('Manu');
+
+it.printEmployeeInformation();
+
+// ACCOUNTING
+const accounting = new AccountingDepartment('d2', []);
+
+accounting.addReport('Something went wrong...');
+
+accounting.addEmployee('Max');
+accounting.addEmployee('Manu');
+
+accounting.printReports();
+accounting.printEmployeeInformation();
