@@ -20,8 +20,8 @@ var Department = (function () {
         this.name = name;
         this.employees = [];
     }
-    Department.prototype.describe = function () {
-        console.log("Department (".concat(this.id, "): (").concat(this.name, ")"));
+    Department.createEmployee = function (name) {
+        return { name: name };
     };
     Department.prototype.addEmployee = function (employee) {
         this.employees.push(employee);
@@ -30,6 +30,7 @@ var Department = (function () {
         console.log(this.employees.length);
         console.log(this.employees);
     };
+    Department.fiscalYear = 2020;
     return Department;
 }());
 var ITDepartment = (function (_super) {
@@ -39,6 +40,9 @@ var ITDepartment = (function (_super) {
         _this.admins = admins;
         return _this;
     }
+    ITDepartment.prototype.describe = function () {
+        console.log('IT Department - ID: ' + this.id);
+    };
     return ITDepartment;
 }(Department));
 var AccountingDepartment = (function (_super) {
@@ -46,8 +50,32 @@ var AccountingDepartment = (function (_super) {
     function AccountingDepartment(id, reports) {
         var _this = _super.call(this, id, 'Accounting') || this;
         _this.reports = reports;
+        _this.lastReport = reports[0];
         return _this;
     }
+    Object.defineProperty(AccountingDepartment.prototype, "mostRecentReport", {
+        get: function () {
+            if (this.lastReport) {
+                return this.lastReport;
+            }
+            throw new Error('No report found.');
+        },
+        set: function (value) {
+            if (!value) {
+                throw new Error('Please pass in a valid value!');
+            }
+            this.addReport(value);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    AccountingDepartment.getInstance = function () {
+        if (AccountingDepartment.instance) {
+            return this.instance;
+        }
+        this.instance = new AccountingDepartment('d2', []);
+        return this.instance;
+    };
     AccountingDepartment.prototype.addEmployee = function (name) {
         if (name === 'Max') {
             return;
@@ -56,21 +84,21 @@ var AccountingDepartment = (function (_super) {
     };
     AccountingDepartment.prototype.addReport = function (text) {
         this.reports.push(text);
+        this.lastReport = text;
     };
     AccountingDepartment.prototype.printReports = function () {
         console.log(this.reports);
     };
+    AccountingDepartment.prototype.describe = function () {
+        console.log('Accounting Department - ID: ' + this.id);
+    };
     return AccountingDepartment;
 }(Department));
+var employee1 = Department.createEmployee('Max');
 var it = new ITDepartment('d1', ['Max']);
 it.describe();
 it.addEmployee('Max');
 it.addEmployee('Manu');
 it.printEmployeeInformation();
-var accounting = new AccountingDepartment('d2', []);
-accounting.addReport('Something went wrong...');
-accounting.addEmployee('Max');
-accounting.addEmployee('Manu');
-accounting.printReports();
-accounting.printEmployeeInformation();
+var accounting = AccountingDepartment.getInstance();
 //# sourceMappingURL=app.js.map
