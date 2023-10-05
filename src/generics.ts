@@ -54,3 +54,31 @@ textStorage.removeItem('Max');
 textStorage.getItem();
 
 const numberStorage = new DataStorage<number>();
+
+interface CourseGoal {
+  title: string;
+  description: string;
+  completeUntil: Date;
+}
+
+// * Partial
+function createCourseGoal(
+  title: string,
+  description: string,
+  date: Date
+): CourseGoal {
+  let courseGoal: Partial<CourseGoal> = {};
+  courseGoal.title = title;
+  courseGoal.description = description;
+  courseGoal.completeUntil = date;
+  return courseGoal as CourseGoal;
+}
+
+// * Readonly
+const names: Readonly<string[]> = ['Max', 'Sports'];
+// names.push('Manu');
+// names.pop();
+// ! We can't add or remove items from it because we used Readonly generic utility helper type
+
+
+

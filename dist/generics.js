@@ -40,4 +40,12 @@ textStorage.addItem('Manu');
 textStorage.removeItem('Max');
 textStorage.getItem();
 const numberStorage = new DataStorage();
+function createCourseGoal(title, description, date) {
+    let courseGoal = {};
+    courseGoal.title = title;
+    courseGoal.description = description;
+    courseGoal.completeUntil = date;
+    return courseGoal;
+}
+const names = ['Max', 'Sports'];
 //# sourceMappingURL=generics.js.map
