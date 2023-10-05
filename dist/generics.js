@@ -26,6 +26,8 @@ class DataStorage {
         this.data.push(item);
     }
     removeItem(item) {
+        if (this.data.indexOf(item) === -1)
+            return;
         this.data.splice(this.data.indexOf(item), 1);
     }
     getItem() {
@@ -38,9 +40,4 @@ textStorage.addItem('Manu');
 textStorage.removeItem('Max');
 textStorage.getItem();
 const numberStorage = new DataStorage();
-const objStorage = new DataStorage();
-objStorage.addItem({ name: 'Max' });
-objStorage.addItem({ name: 'Manu' });
-objStorage.removeItem({ name: 'Max' });
-console.log(objStorage.getItem());
 //# sourceMappingURL=generics.js.map
