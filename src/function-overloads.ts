@@ -4,7 +4,7 @@ type Numeric = number | boolean;
 type Universal = Combinable & Numeric;
 
 // * Function Overloads
-function add2(a: string; b: string): string
+function add2(a: string, b: string): string
 function add2(a: number, b: number): number
 
 // * Main Function

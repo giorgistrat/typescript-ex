@@ -1,0 +1,62 @@
+function merge<A extends object, B extends object>(a: A, b: B) {
+  return Object.assign(a, b);
+}
+
+const mergedObj = merge({ name: 'Max' }, { age: 30 });
+// * extends is type constraint in this case It is good practice because now we cannot assign other data type than object inside this generic function
+
+type Lengthy = {
+  length: number;
+};
+
+function countAndDescribe<T extends Lengthy>(element: T): [T, string] {
+  let descriptionText = 'Got no value.';
+  if (element.length === 1) {
+    descriptionText = 'Got 1 Element';
+  } else if (element.length > 1) {
+    descriptionText = 'Got ' + element.length + ' elements';
+  }
+  return [element, descriptionText];
+}
+
+console.log(countAndDescribe(['Sports', 'Cooking']));
+
+function extractAndConvert<T extends object, U extends keyof T>(
+  obj: T,
+  key: U
+) {
+  return obj[key];
+}
+
+extractAndConvert({ name: 'Max', age: 21 }, 'age');
+
+class DataStorage<T> {
+  private data: T[] = [];
+
+  addItem(item: T) {
+    this.data.push(item);
+  }
+
+  removeItem(item: T) {
+    this.data.splice(this.data.indexOf(item), 1);
+  }
+
+  getItem() {
+    return [...this.data];
+  }
+}
+
+const textStorage = new DataStorage<string>(); 
+textStorage.addItem('Max');
+textStorage.addItem('Manu');
+textStorage.removeItem('Max');
+textStorage.getItem();
+
+const numberStorage = new DataStorage<number>();
+
+const objStorage = new DataStorage<object>();
+objStorage.addItem({ name: 'Max' });
+objStorage.addItem({ name: 'Manu' });
+// ...
+objStorage.removeItem({ name: 'Max' });
+console.log(objStorage.getItem());
